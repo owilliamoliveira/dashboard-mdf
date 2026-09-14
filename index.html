@@ -142,8 +142,28 @@ function parseDuration(v,start,end){
   if(Number.isFinite(a)&&Number.isFinite(b)){let d=b-a;return d<0?d+1440:d}
   return 0;
 }
+function normalizeDateValue(v){
+  if(v===null||v===undefined||v==="") return "";
+  let s=String(v).trim();
+
+  // ISO date/time: keep only YYYY-MM-DD.
+  let m=s.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);
+  if(m) return `${m[1]}-${String(m[2]).padStart(2,"0")}-${String(m[3]).padStart(2,"0")}`;
+
+  // Brazilian date: DD/MM/YYYY or DD-MM-YYYY.
+  m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/);
+  if(m) return `${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+
+  // Google Sheets/Excel can sometimes return a full date string.
+  const d=new Date(s);
+  if(!Number.isNaN(d.getTime())){
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  }
+  return s.slice(0,10);
+}
+
 function normalize(r){
-  return {data:String(r.data??r.Data??'').slice(0,10),turno:String(r.turno??r.Turno??''),
+  return {data:normalizeDateValue(r.data??r.Data??''),turno:String(r.turno??r.Turno??''),
   tipo:String(r.tipo??r.Tipo??''),area:String(r.area??r.Área??r.Area??''),motivo:String(r.motivo??r.Motivo??''),
   inicio:String(r.inicio??r['Hora Inicial']??''),fim:String(r.fim??r['Hora Final']??''),minutos:parseDuration(r.minutos??r['Tempo (min)'],r.inicio??r['Hora Inicial'],r.fim??r['Hora Final']),linha:String(r.linha??r.Linha??'')}
 }
@@ -206,15 +226,24 @@ function priorities(rows){
 function update(){
   const rows=filtered(),mins=rows.map(r=>Number.isFinite(Number(r.minutos))?Number(r.minutos):0),total=sum(mins),areas=group(rows,'area'),reasons=group(rows,'motivo'),mx=Math.max(...mins,0),mxr=rows.find(r=>r.minutos===mx);
   $('kOcc').textContent=fmt0.format(rows.length);$('kHours').textContent=fmt1.format(total/60)+' h';$('kMean').textContent=fmt1.format(rows.length?total/rows.length:0);$('kMedian').textContent=fmt1.format(median(mins));$('kMax').textContent=fmt1.format(mx)+' min';$('kMaxSub').textContent=mxr?`${mxr.linha} · ${mxr.motivo}`:'—';$('kArea').textContent=areas[0]?areas[0].label:'—';$('kAreaSub').textContent=areas[0]?`${fmt1.format(areas[0].min/60)} h · ${fmt1.format(pct(areas[0].min,total))}% do tempo`:'—';
-  const ds=rows.map(r=>r.data).sort(),start=ds[0],end=ds[ds.length-1];$('periodLabel').textContent=start&&end?`${dateLabel(start)} a ${dateLabel(end)}`:'Sem dados';$('recordLabel').textContent=`${rows.length} registros · ${fmt1.format(total/60)} h paradas`;
+  const filterStart=$('fStart').value,filterEnd=$('fEnd').value;
+  $('periodLabel').textContent=filterStart&&filterEnd?`${dateLabel(filterStart)} a ${dateLabel(filterEnd)}`:'Sem período';
+  $('recordLabel').textContent=`${rows.length} registros · ${fmt1.format(total/60)} h paradas`;
   const line=$('fLinha').value==='Consolidado'?'MDF1 + MDF2':$('fLinha').value,top=reasons[0];$('insight').textContent=rows.length?`${line}: ${fmt1.format(total/60)} h de parada em ${rows.length} ocorrências. ${areas[0]?`Maior impacto em ${areas[0].label}, com ${fmt1.format(areas[0].min/60)} h.`:''} ${top?`Principal motivo por tempo: “${top.label}”, com ${fmt1.format(top.min/60)} h.`:''}`:'Nenhum registro atende aos filtros selecionados.';
   dailyChart($('dailyChart'),rows);durationChart($('durationChart'),rows);barChart($('areaChart'),areas,'#0f766e',9,'h');barChart($('reasonChart'),reasons,'#d97706',10,'h');shiftChart($('shiftChart'),rows);barChart($('typeChart'),group(rows,'tipo'),'#2563eb',9,'h');priorities(rows);
   scatterChart($('scatterChart'),rows);$('footerInfo').textContent=`Base: ${DATA.length} registros · última atualização: ${new Date().toLocaleString('pt-BR')}`
 }
+function currentReferencePeriod(){
+  const now=new Date();
+  const y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
+  return {start:`${y}-${m}-01`,end:`${y}-${m}-${d}`};
+}
 function fillFilters(){
   const tipos=[...new Set(DATA.map(r=>r.tipo))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'pt-BR')),areas=[...new Set(DATA.map(r=>r.area))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'pt-BR'));
   $('fTipo').innerHTML='<option>Todos</option>'+tipos.map(x=>`<option>${esc(x)}</option>`).join('');$('fArea').innerHTML='<option>Todos</option>'+areas.map(x=>`<option>${esc(x)}</option>`).join('');
-  const dates=DATA.map(r=>r.data).filter(Boolean).sort();$('fStart').value=dates[0]||'';$('fEnd').value=dates[dates.length-1]||''
+  const ref=currentReferencePeriod();
+  $('fStart').value=ref.start;
+  $('fEnd').value=ref.end;
 }
 function parseCSV(text){
   const rows=[];let row=[],field='',quoted=false;
@@ -230,7 +259,7 @@ function normalizeRemote(rows){
   if(!rows.length)return [];const h=rows[0].map(x=>String(x).trim().toLowerCase());
   const idx=(...names)=>{for(const n of names){let i=h.indexOf(n.toLowerCase());if(i>=0)return i}return -1};
   const c={data:idx('data'),turno:idx('turno'),tipo:idx('tipo'),area:idx('área','area'),motivo:idx('motivo'),inicio:idx('hora inicial'),fim:idx('hora final'),tempo:idx('tempo (min)','tempo (minutos)','duração'),linha:idx('linha')};
-  return rows.slice(1).map(r=>normalize({data:r[c.data],turno:r[c.turno],tipo:r[c.tipo],area:r[c.area],motivo:r[c.motivo],inicio:r[c.inicio],fim:r[c.fim],minutos:r[c.tempo],linha:r[c.linha]})).filter(r=>r.data&&r.linha&&r.minutos>0)
+  return rows.slice(1).map(r=>normalize({data:c.data>=0?r[c.data]:'',turno:c.turno>=0?r[c.turno]:'',tipo:c.tipo>=0?r[c.tipo]:'',area:c.area>=0?r[c.area]:'',motivo:c.motivo>=0?r[c.motivo]:'',inicio:c.inicio>=0?r[c.inicio]:'',fim:c.fim>=0?r[c.fim]:'',minutos:c.tempo>=0?r[c.tempo]:'',linha:c.linha>=0?r[c.linha]:''})).filter(r=>r.data&&r.linha&&r.minutos>0)
 }
 async function loadOnlineData(show=false){
   const previous = DATA.slice();
