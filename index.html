@@ -504,7 +504,7 @@ function greconDailyOccChart(el,rows){
   const dates=[...map.keys()].sort(),W=760,H=290,L=52,R=18,T=20,B=42,max=Math.max(...dates.map(d=>map.get(d)),1);
   if(!dates.length){el.innerHTML='<div class="empty">Sem dados.</div>';return}
   const x=i=>L+i*(W-L-R)/Math.max(1,dates.length-1),y=v=>H-B-(H-B-T)*v/max;let c='';
-  for(let i=0;i<5;i++){const yy=y(max*i/4);c+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#edf2f7"/><text x="${L-7}" y="${yy+4}" text-anchor="end" font-size="9" fill="#829ab1">${Math.round(max*(1-i/4))}</text>`}
+  for(let i=0;i<5;i++){const yy=y(max*i/4);c+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#edf2f7"/><text x="${L-7}" y="${yy+4}" text-anchor="end" font-size="9" fill="#829ab1">${Math.round(max*i/4)}</text>`}
   const pts=dates.map((d,i)=>[x(i),y(map.get(d))]);c+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#0f766e" stroke-width="3"/>`;
   pts.forEach((p,i)=>c+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#0f766e"><title>${dateLabel(dates[i])}: ${map.get(dates[i])} ocorrências</title></circle>`);
   dates.forEach((d,i)=>{if(i%Math.max(1,Math.ceil(dates.length/8))===0)c+=`<text x="${x(i)}" y="${H-15}" text-anchor="middle" font-size="9" fill="#829ab1">${dateLabel(d)}</text>`});
