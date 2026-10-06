@@ -184,59 +184,34 @@ th,td{padding:9px 10px;border-bottom:1px solid #edf2f7}tbody tr:hover{background
 
 </div>
 <div class="page-hidden" id="pageGrecon">
-<section class="grecon-page">
-<div class="grecon-hero">
-<div>
-<div class="grecon-eyebrow">ANÁLISE DE PARADAS / GRECON</div>
-<h2>Ocorrências Grecon</h2>
-<p>Visão dedicada às ocorrências cujo motivo é exatamente “Grecon”, utilizando a mesma base de paradas do dashboard MDF.</p>
-</div>
-<div class="hero-side"><strong id="greconPeriod">—</strong><span id="greconRecords">—</span></div>
-</div>
-<div class="grecon-filter-panel">
-<div class="grecon-filter"><label>Linha</label><select id="gLinha"><option value="ALL">Ambas</option><option value="MDF1">MDF1</option><option value="MDF2">MDF2</option></select></div>
-<div class="grecon-filter"><label>Turno</label><select id="gTurno"><option value="ALL">Todos</option><option value="A">A · 00–08h</option><option value="B">B · 08–16h</option><option value="C">C · 16–00h</option></select></div>
-<button class="btn btn-light" id="gReset">Limpar filtros Grecon</button>
-</div>
-<div class="grecon-kpis">
-<article class="grecon-kpi"><div class="grecon-kpi-label">Ocorrências</div><div class="grecon-kpi-value" id="gOcc">—</div><div class="grecon-kpi-sub">motivo exato “Grecon”</div></article>
-<article class="grecon-kpi"><div class="grecon-kpi-label">Turno de maior volume</div><div class="grecon-kpi-value" id="gShift">—</div><div class="grecon-kpi-sub" id="gShiftSub">—</div></article>
-<article class="grecon-kpi"><div class="grecon-kpi-label">Hora de pico</div><div class="grecon-kpi-value" id="gHour">—</div><div class="grecon-kpi-sub" id="gHourSub">—</div></article>
-<article class="grecon-kpi"><div class="grecon-kpi-label">Duração média</div><div class="grecon-kpi-value" id="gMean">—</div><div class="grecon-kpi-sub">tempo por ocorrência</div></article>
-</div>
-<div class="grecon-grid">
-<article class="grecon-card">
-<h3>Ocorrências por turno</h3>
-<p>Comparação MDF1 × MDF2 nas três janelas de 8 horas.</p>
-<div class="grecon-chart" id="greconShiftChart"></div>
-</article>
-<article class="grecon-card">
-<h3>Tendência por horário</h3>
-<p>Hora inicial das ocorrências Grecon · 00h–23h.</p>
-<div class="grecon-chart" id="greconHourChart"></div>
-</article>
-<article class="grecon-card">
-<h3>Grecon por área</h3>
-<p>Áreas com maior frequência de ocorrências.</p>
-<div class="grecon-chart" id="greconAreaChart"></div>
-</article>
-<article class="grecon-card">
-<h3>Grecon por dia</h3>
-<p>Evolução diária das ocorrências filtradas.</p>
-<div class="grecon-chart" id="greconDailyChart"></div>
-</article>
-<article class="grecon-card wide">
-<h3>Detalhamento das ocorrências</h3>
-<p>Registros utilizados exclusivamente para esta análise.</p>
-<div class="grecon-table-wrap">
-<table class="grecon-table">
-<thead><tr><th>Data</th><th>Hora</th><th>Turno</th><th>Linha</th><th>Área</th><th>Tipo</th><th>Duração</th></tr></thead>
-<tbody id="greconTableBody"></tbody>
-</table>
-</div>
-<div class="grecon-note" id="greconNote">—</div>
-</article>
-</div>
+<section id="greconDashboard">
+<section class="kpis">
+<article class="kpi"><div class="kpi-label">Ocorrências Grecon</div><div class="kpi-value" id="gOcc">—</div><div class="kpi-sub">motivo exato “Grecon”</div></article>
+<article class="kpi"><div class="kpi-label">Tempo parado</div><div class="kpi-value" id="gHours">—</div><div class="kpi-sub">horas acumuladas</div></article>
+<article class="kpi"><div class="kpi-label">Média por ocorrência</div><div class="kpi-value" id="gMean">—</div><div class="kpi-sub">minutos</div></article>
+<article class="kpi"><div class="kpi-label">Mediana</div><div class="kpi-value" id="gMedian">—</div><div class="kpi-sub">minutos</div></article>
+<article class="kpi"><div class="kpi-label">Maior parada</div><div class="kpi-value" id="gMax">—</div><div class="kpi-sub" id="gMaxSub">—</div></article>
+<article class="kpi"><div class="kpi-label">Principal área</div><div class="kpi-value" id="gArea">—</div><div class="kpi-sub" id="gAreaSub">—</div></article>
+</section>
+<div class="insight" id="greconInsight">—</div>
+<div class="question"><span class="qnum">01</span> QUANTO ESTAMOS PERDENDO?</div>
+<section class="grid">
+<article class="card"><h2>Horas de parada Grecon por dia</h2><p>Evolução diária das perdas Grecon no período filtrado.</p><div class="chart" id="greconDailyChart"></div><div class="legend"><span><i class="dot" style="background:#2563eb"></i>MDF1</span><span><i class="dot" style="background:#0f766e"></i>MDF2</span></div></article>
+<article class="card"><h2>Distribuição por duração</h2><p>Permite separar microparadas Grecon de eventos longos.</p><div class="chart" id="greconDurationChart"></div></article>
+</section>
+<div class="question"><span class="qnum">02</span> ONDE ESTAMOS PERDENDO?</div>
+<section class="grid">
+<article class="card"><h2>Pareto de perdas por área</h2><p>Tempo total parado em horas nas áreas com ocorrências Grecon.</p><div class="chart" id="greconAreaChart"></div></article>
+<article class="card"><h2>Distribuição das ocorrências por turno</h2><p>Quantidade e tempo total das ocorrências Grecon por turno.</p><div class="chart" id="greconShiftChart"></div></article>
+<article class="card"><h2>Tendência por horário</h2><p>Hora inicial das ocorrências Grecon · 00h–23h.</p><div class="chart" id="greconHourChart"></div></article>
+<article class="card"><h2>Ocorrências Grecon por dia</h2><p>Frequência diária no período filtrado.</p><div class="chart" id="greconDailyOccChart"></div></article>
+</section>
+<div class="question"><span class="qnum">03</span> O QUE DEVEMOS ATACAR PRIMEIRO?</div>
+<section class="grid">
+<article class="card"><h2>Impacto — horas perdidas por área</h2><p>Ranking das áreas que mais reduzem a disponibilidade por Grecon.</p><div class="table-wrap"><table><thead><tr><th>#</th><th>Linha</th><th>Área</th><th>Ocorr.</th><th>Horas</th></tr></thead><tbody id="greconImpactBody"></tbody></table></div></article>
+<article class="card"><h2>Instabilidade — ocorrências por área</h2><p>Ranking das áreas com maior repetição de ocorrências Grecon.</p><div class="table-wrap"><table><thead><tr><th>#</th><th>Linha</th><th>Área</th><th>Ocorr.</th><th>Horas</th></tr></thead><tbody id="greconFreqBody"></tbody></table></div></article>
+<article class="card grid-wide"><h2>Detalhamento das ocorrências Grecon</h2><p>Registros utilizados exclusivamente para esta análise, respeitando todos os filtros da barra principal.</p><div class="table-wrap"><table><thead><tr><th>#</th><th>Data</th><th>Hora</th><th>Turno</th><th>Linha</th><th>Área</th><th>Tipo</th><th>Duração</th></tr></thead><tbody id="greconTableBody"></tbody></table></div><div class="footer"><span id="greconNote">—</span><span id="greconRecords">—</span></div></article>
+</section>
 </section>
 </div>
 <script>
@@ -384,8 +359,8 @@ function update(){
   dailyChart($('dailyChart'),rows);durationChart($('durationChart'),rows);barChart($('areaChart'),areas,'#0f766e',9,'h');barChart($('reasonChart'),reasons,'#d97706',10,'h');shiftChart($('shiftChart'),rows);barChart($('typeChart'),group(rows,'tipo'),'#2563eb',9,'h');priorities(rows);
   scatterChart($('scatterChart'),rows);$('footerInfo').textContent=`Base: ${DATA.length} registros · última atualização: ${new Date().toLocaleString('pt-BR')}`;
   if(typeof v16Render==='function') v16Render(rows);
-}
   if($('pageGrecon') && !$('pageGrecon').classList.contains('page-hidden')) updateGrecon();
+}
 
 function currentReferencePeriod(){
   const now=new Date();
@@ -474,16 +449,9 @@ async function loadOnlineData(show=false){
 }
 
 function greconRows(){
-  const line=$('gLinha').value, shift=$('gTurno').value;
-  return DATA.filter(r=>{
-    const motivo=String(r.motivo||'').trim().toLowerCase();
-    return motivo==='grecon' &&
-      (line==='ALL'||r.linha===line) &&
-      (shift==='ALL'||r.turno===shift);
-  });
+  return filtered().filter(r=>String(r.motivo||'').trim().toLowerCase()==='grecon');
 }
 function greconFmtMin(v){
-  v=Number(v)||0;
   const m=Math.floor(v),sec=Math.round((v-m)*60);
   return `${m}m ${String(sec).padStart(2,'0')}s`;
 }
@@ -491,86 +459,95 @@ function greconHour(r){
   const m=String(r.inicio||'').match(/^(\d{1,2})/);
   return m?Math.min(23,Math.max(0,Number(m[1]))):null;
 }
-function greconShiftLabel(s){return s==='A'?'00–08h':s==='B'?'08–16h':'16–00h'}
-function greconBarChart(el,items,color){
-  const a=items.slice(0,10),W=760,H=280,left=185,right=50,top=18,bottom=25;
+function greconShiftLabel(s){return s==='A'?'00–08h':s==='B'?'08–16h':s==='C'?'16–00h':s}
+function greconBarChart(el,items,color='#0f766e',unit='h'){
+  const a=items.slice(0,10),W=760,H=290,left=190,right=48,top=18,bottom=28;
   if(!a.length){el.innerHTML='<div class="empty">Sem dados para o filtro selecionado.</div>';return}
-  const max=Math.max(...a.map(x=>x.value),1),bh=Math.min(25,(H-top-bottom)/a.length-6);
-  let c='';
-  a.forEach((x,i)=>{
-    const y=top+i*((H-top-bottom)/a.length),bw=(W-left-right)*x.value/max;
-    c+=`<text x="${left-8}" y="${y+bh*.78}" text-anchor="end" font-size="10" fill="#486581">${esc(String(x.label).slice(0,28))}</text>`;
-    c+=`<rect x="${left}" y="${y}" width="${Math.max(2,bw)}" height="${bh}" rx="4" fill="${color}" opacity="${i===0?1:.78}"/>`;
-    c+=`<text x="${left+bw+7}" y="${y+bh*.78}" font-size="10" font-weight="700" fill="#243b53">${x.value}</text>`;
-  });
-  el.innerHTML=`<svg viewBox="0 ${W} ${H}">${c}</svg>`;
+  const max=Math.max(...a.map(x=>unit==='h'?hours(x.min):x.occ),1),bh=Math.min(25,(H-top-bottom)/a.length-7);
+  let c=`<line x1="${left}" y1="${H-bottom}" x2="${W-right}" y2="${H-bottom}" stroke="#d9e2ec"/>`;
+  a.forEach((x,i)=>{let val=unit==='h'?hours(x.min):x.occ,y=top+i*((H-top-bottom)/a.length),bw=(W-left-right)*val/max;
+    c+=`<text x="${left-8}" y="${y+bh*.78}" text-anchor="end" font-size="11" fill="#486581">${esc(String(x.label).slice(0,30))}</text>`;
+    c+=`<rect x="${left}" y="${y}" width="${Math.max(2,bw)}" height="${bh}" rx="5" fill="${color}" opacity="${i===0?1:.82}"/>`;
+    c+=`<text x="${left+bw+7}" y="${y+bh*.78}" font-size="11" font-weight="700" fill="#243b53">${unit==='h'?fmt1.format(val)+' h':fmt0.format(val)}</text>`;
+  });el.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${c}</svg>`;
 }
 function greconShiftChart(el,rows){
-  const vals=['A','B','C'].map((s,i)=>({s,m1:rows.filter(r=>r.turno===s&&r.linha==='MDF1').length,m2:rows.filter(r=>r.turno===s&&r.linha==='MDF2').length}));
-  const W=760,H=280,L=55,R=20,T=20,B=45,max=Math.max(...vals.flatMap(x=>[x.m1,x.m2]),1);
-  const gw=(W-L-R)/3,bw=38,gap=8;let c='';
-  [0,.25,.5,.75,1].forEach(q=>{const y=H-B-(H-B-T)*q;c+=`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#edf2f7"/><text x="${L-7}" y="${y+4}" text-anchor="end" font-size="9" fill="#829ab1">${Math.round(max*q)}</text>`});
-  vals.forEach((x,i)=>{
-    const cx=L+gw*i+gw/2,h1=(H-B-T)*x.m1/max,h2=(H-B-T)*x.m2/max;
-    c+=`<rect x="${cx-gap/2-bw}" y="${H-B-h1}" width="${bw}" height="${h1}" rx="4" fill="#0f766e"/><rect x="${cx+gap/2}" y="${H-B-h2}" width="${bw}" height="${h2}" rx="4" fill="#2563eb"/>`;
-    c+=`<text x="${cx}" y="${H-18}" text-anchor="middle" font-size="11" font-weight="800" fill="#486581">${x.s}</text><text x="${cx}" y="${H-5}" text-anchor="middle" font-size="8" fill="#829ab1">${greconShiftLabel(x.s)}</text>`;
-    c+=`<text x="${cx-bw/2-gap/2}" y="${H-B-h1-5}" text-anchor="middle" font-size="9" fill="#0f766e">${x.m1}</text><text x="${cx+bw/2+gap/2}" y="${H-B-h2-5}" text-anchor="middle" font-size="9" fill="#2563eb">${x.m2}</text>`;
-  });
-  c+=`<text x="${W-20}" y="15" text-anchor="end" font-size="9" fill="#0f766e">MDF1</text><text x="${W-65}" y="15" text-anchor="end" font-size="9" fill="#2563eb">MDF2</text>`;
-  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${c}</svg>`;
+  const a=['A','B','C'].map(s=>{const q=rows.filter(r=>r.turno===s);return{label:'Turno '+s,occ:q.length,min:sum(q.map(r=>r.minutos))}}).filter(x=>x.occ);
+  const W=760,H=290,left=80,right=30,top=22,bottom=48;
+  if(!a.length){el.innerHTML='<div class="empty">Sem dados para o filtro selecionado.</div>';return}
+  const max=Math.max(...a.map(x=>x.min/60),1),bw=100,gap=(W-left-right-a.length*bw)/(a.length+1);let c='';
+  a.forEach((x,i)=>{let xx=left+gap+i*(bw+gap),h=190*(x.min/60)/max,yy=H-bottom-h;c+=`<rect x="${xx}" y="${yy}" width="${bw}" height="${h}" rx="8" fill="${colors[i]}"/><text x="${xx+bw/2}" y="${yy-8}" text-anchor="middle" font-size="12" font-weight="800" fill="#243b53">${fmt1.format(x.min/60)} h</text><text x="${xx+bw/2}" y="${H-22}" text-anchor="middle" font-size="12" fill="#486581">${x.label}</text><text x="${xx+bw/2}" y="${H-7}" text-anchor="middle" font-size="10" fill="#829ab1">${x.occ} ocorr.</text>`});el.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${c}</svg>`;
 }
 function greconHourChart(el,rows){
-  const data=Array.from({length:24},(_,h)=>({h,m1:rows.filter(r=>greconHour(r)===h&&r.linha==='MDF1').length,m2:rows.filter(r=>greconHour(r)===h&&r.linha==='MDF2').length}));
-  const W=900,H=280,L=42,R=15,T=20,B=40,max=Math.max(...data.flatMap(x=>[x.m1,x.m2]),1);
-  const x=i=>L+i*(W-L-R)/23,y=v=>H-B-(H-B-T)*v/max;
-  const path=k=>data.map((d,i)=>(i?'L':'M')+x(i)+' '+y(d[k])).join(' ');
+  const data=Array.from({length:24},(_,h)=>({h,n:rows.filter(r=>greconHour(r)===h).length}));
+  const W=900,H=290,L=42,R=15,T=20,B=40,max=Math.max(...data.map(x=>x.n),1);
+  const x=i=>L+i*(W-L-R)/23,y=v=>H-B-(H-B-T)*v/max,path=data.map((d,i)=>(i?'L':'M')+x(i)+' '+y(d.n)).join(' ');
   let c='';
-  [0,.25,.5,.75,1].forEach(q=>{const yy=y(max*q);c+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#edf2f7"/>`});
-  c+=`<path d="${path('m1')}" fill="none" stroke="#0f766e" stroke-width="2.5"/><path d="${path('m2')}" fill="none" stroke="#2563eb" stroke-width="2.5"/>`;
-  data.forEach((d,i)=>{c+=`<circle cx="${x(i)}" cy="${y(d.m1)}" r="3" fill="#0f766e"><title>${String(i).padStart(2,'0')}h · MDF1 ${d.m1}</title></circle><circle cx="${x(i)}" cy="${y(d.m2)}" r="3" fill="#2563eb"><title>${String(i).padStart(2,'0')}h · MDF2 ${d.m2}</title></circle>`});
+  for(let i=0;i<5;i++){const q=i/4,yy=y(max*q);c+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#edf2f7"/><text x="${L-7}" y="${yy+4}" text-anchor="end" font-size="9" fill="#829ab1">${Math.round(max*q)}</text>`}
+  c+=`<path d="${path}" fill="none" stroke="#0f766e" stroke-width="3"/>`;
+  data.forEach((d,i)=>c+=`<circle cx="${x(i)}" cy="${y(d.n)}" r="3" fill="#0f766e"><title>${String(i).padStart(2,'0')}h · ${d.n} ocorrências</title></circle>`);
   [0,4,8,12,16,20,23].forEach(i=>c+=`<text x="${x(i)}" y="${H-15}" text-anchor="middle" font-size="9" fill="#829ab1">${String(i).padStart(2,'0')}h</text>`);
   el.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${c}</svg>`;
 }
 function greconDailyChart(el,rows){
-  const map=new Map();rows.forEach(r=>map.set(r.data,(map.get(r.data)||0)+1));
-  const dates=[...map.keys()].sort(),W=760,H=280,L=45,R=18,T=20,B=42,max=Math.max(...dates.map(d=>map.get(d)),1);
+  const maps={MDF1:new Map(),MDF2:new Map()};rows.forEach(r=>{if(maps[r.linha])maps[r.linha].set(r.data,(maps[r.linha].get(r.data)||0)+r.minutos/60)});
+  const dates=[...new Set(rows.map(r=>r.data))].sort(),W=1100,H=300,L=52,R=18,T=20,B=42;
   if(!dates.length){el.innerHTML='<div class="empty">Sem dados.</div>';return}
-  const x=i=>L+i*(W-L-R)/Math.max(1,dates.length-1),y=v=>H-B-(H-B-T)*v/max;
-  let c='';
-  [0,.25,.5,.75,1].forEach(q=>{const yy=y(max*q);c+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#edf2f7"/>`});
-  const pts=dates.map((d,i)=>[x(i),y(map.get(d))]);
-  c+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#0f766e" stroke-width="3"/>`;
+  const vals=dates.flatMap(d=>['MDF1','MDF2'].map(l=>maps[l].get(d)||0)),max=Math.max(...vals,1);let c='';
+  for(let i=0;i<5;i++){let y=T+(H-T-B)*i/4,v=max*(1-i/4);c+=`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#edf2f7"/><text x="${L-7}" y="${y+4}" text-anchor="end" font-size="10" fill="#829ab1">${fmt1.format(v)}</text>`}
+  [['MDF1','#2563eb'],['MDF2','#0f766e']].forEach(([line,col])=>{let pts=dates.map((d,i)=>{let xx=L+(W-L-R)*(dates.length===1?.5:i/(dates.length-1)),yy=T+(H-T-B)*(1-(maps[line].get(d)||0)/max);return[xx,yy]});c+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="3"/>`;pts.forEach((pt,i)=>c+=`<circle cx="${pt[0]}" cy="${pt[1]}" r="4" fill="${col}"><title>${line} ${dateLabel(dates[i])}: ${fmt1.format(maps[line].get(dates[i])||0)} h</title></circle>`)});
+  dates.forEach((d,i)=>{if(i%Math.max(1,Math.ceil(dates.length/9))===0){let xx=L+(W-L-R)*(dates.length===1?.5:i/(dates.length-1));c+=`<text x="${xx}" y="${H-15}" text-anchor="middle" font-size="10" fill="#627d98">${dateLabel(d)}</text>`}});
+  el.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${c}</svg>`;
+}
+function greconDailyOccChart(el,rows){
+  const map=new Map();rows.forEach(r=>map.set(r.data,(map.get(r.data)||0)+1));
+  const dates=[...map.keys()].sort(),W=760,H=290,L=52,R=18,T=20,B=42,max=Math.max(...dates.map(d=>map.get(d)),1);
+  if(!dates.length){el.innerHTML='<div class="empty">Sem dados.</div>';return}
+  const x=i=>L+i*(W-L-R)/Math.max(1,dates.length-1),y=v=>H-B-(H-B-T)*v/max;let c='';
+  for(let i=0;i<5;i++){const yy=y(max*i/4);c+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#edf2f7"/><text x="${L-7}" y="${yy+4}" text-anchor="end" font-size="9" fill="#829ab1">${Math.round(max*(1-i/4))}</text>`}
+  const pts=dates.map((d,i)=>[x(i),y(map.get(d))]);c+=`<polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#0f766e" stroke-width="3"/>`;
   pts.forEach((p,i)=>c+=`<circle cx="${p[0]}" cy="${p[1]}" r="4" fill="#0f766e"><title>${dateLabel(dates[i])}: ${map.get(dates[i])} ocorrências</title></circle>`);
   dates.forEach((d,i)=>{if(i%Math.max(1,Math.ceil(dates.length/8))===0)c+=`<text x="${x(i)}" y="${H-15}" text-anchor="middle" font-size="9" fill="#829ab1">${dateLabel(d)}</text>`});
   el.innerHTML=`<svg viewBox="0 0 ${W} ${H}">${c}</svg>`;
 }
+function greconDurationChart(el,rows){
+  const bins=[['Até 5 min',0,5],['6–15 min',6,15],['16–30 min',16,30],['31–60 min',31,60],['>60 min',61,Infinity]];
+  const a=bins.map(b=>{const q=rows.filter(r=>r.minutos>=b[1]&&r.minutos<=b[2]);return{label:b[0],occ:q.length,min:sum(q.map(r=>r.minutos))}});
+  barChart(el,a,'#7c3aed',5,'h');
+}
+function greconAreaRows(rows){
+  const m=new Map();rows.forEach(r=>{const k=r.linha+'||'+(r.area||'Não informado');const v=m.get(k)||{linha:r.linha,area:r.area||'Não informado',occ:0,min:0};v.occ++;v.min+=r.minutos;m.set(k,v)});return [...m.values()];
+}
+function greconTableBody(id,rows){
+  $(id).innerHTML=rows.map((x,i)=>`<tr><td class="rank">${i+1}</td><td>${esc(x.data?dateLabel(x.data):'')}</td><td>${esc(x.inicio||'')}</td><td>${esc(x.turno||'')}</td><td>${esc(x.linha||'')}</td><td>${esc(x.area||'')}</td><td>${esc(x.tipo||'')}</td><td class="hours">${greconFmtMin(x.minutos)}</td></tr>`).join('')||'<tr><td colspan="8">Sem registros Grecon no recorte.</td></tr>';
+}
 function updateGrecon(){
-  const rows=greconRows(), total=rows.length;
-  const byShift=['A','B','C'].map(s=>({s,n:rows.filter(r=>r.turno===s).length}));
-  const peakShift=byShift.reduce((a,b)=>b.n>a.n?b:a,{s:'—',n:0});
-  const byHour=Array.from({length:24},(_,h)=>({h,n:rows.filter(r=>greconHour(r)===h).length}));
-  const peakHour=byHour.reduce((a,b)=>b.n>a.n?b:a,{h:0,n:0});
-  const mean=total?sum(rows.map(r=>r.minutos))/total:0;
-  const dates=rows.map(r=>r.data).filter(Boolean);
+  const rows=greconRows(),total=rows.length,mins=rows.map(r=>r.minutos),totalMin=sum(mins),areas=group(rows,'area');
+  const max=Math.max(...mins,0),maxr=rows.find(r=>r.minutos===max),areaRows=greconAreaRows(rows);
+  const med=median(mins),mean=total?totalMin/total:0;
   $('gOcc').textContent=fmt0.format(total);
-  $('gShift').textContent=total?peakShift.s:'—';
-  $('gShiftSub').textContent=total?`${greconShiftLabel(peakShift.s)} · ${peakShift.n} ocorrências`:'—';
-  $('gHour').textContent=total?String(peakHour.h).padStart(2,'0')+'h':'—';
-  $('gHourSub').textContent=total?`${peakHour.n} ocorrências iniciadas`:'—';
-  $('gMean').textContent=greconFmtMin(mean);
-  $('greconPeriod').textContent=dates.length?`${dateLabel(dates.sort()[0])} — ${dateLabel(dates.sort().at(-1))}`:'Sem dados';
-  $('greconRecords').textContent=`${total} registros Grecon`;
-  const areas=[...new Set(rows.map(r=>r.area||'Não informado'))].map(a=>({label:a,value:rows.filter(r=>r.area===a).length})).sort((a,b)=>b.value-a.value);
+  $('gHours').textContent=fmt1.format(totalMin/60)+' h';
+  $('gMean').textContent=fmt1.format(mean);
+  $('gMedian').textContent=fmt1.format(med);
+  $('gMax').textContent=fmt1.format(max)+' min';
+  $('gMaxSub').textContent=maxr?`${maxr.linha} · ${maxr.area||'Não informado'}`:'—';
+  $('gArea').textContent=areas[0]?areas[0].label:'—';
+  $('gAreaSub').textContent=areas[0]?`${fmt1.format(areas[0].min/60)} h · ${fmt1.format(pct(areas[0].min,totalMin))}% do tempo`:'—';
+  const filterStart=$('fStart').value,filterEnd=$('fEnd').value,period=filterStart&&filterEnd?`${dateLabel(filterStart)} a ${dateLabel(filterEnd)}`:'período filtrado';
+  const line=$('fLinha').value==='Consolidado'?'MDF1 + MDF2':$('fLinha').value;
+  $('greconInsight').textContent=total?`${line}: ${fmt1.format(totalMin/60)} h de parada Grecon em ${total} ocorrências no ${period}. ${areas[0]?`Maior impacto em ${areas[0].label}, com ${fmt1.format(areas[0].min/60)} h.`:''}`:'Nenhuma ocorrência com motivo “Grecon” atende aos filtros selecionados.';
+  greconDailyChart($('greconDailyChart'),rows);
+  greconDurationChart($('greconDurationChart'),rows);
+  greconBarChart($('greconAreaChart'),areas,'#0f766e','h');
   greconShiftChart($('greconShiftChart'),rows);
   greconHourChart($('greconHourChart'),rows);
-  greconBarChart($('greconAreaChart'),areas,'#0f766e');
-  greconDailyChart($('greconDailyChart'),rows);
-  $('greconTableBody').innerHTML=rows.slice().sort((a,b)=>(b.data+b.inicio).localeCompare(a.data+a.inicio)).slice(0,250).map(r=>`<tr><td>${dateLabel(r.data)}</td><td>${esc(r.inicio||'')}</td><td>${esc(r.turno||'')}</td><td>${esc(r.linha||'')}</td><td>${esc(r.area||'')}</td><td>${esc(r.tipo||'')}</td><td>${greconFmtMin(r.minutos)}</td></tr>`).join('')||'<tr><td colspan="7">Sem registros Grecon no recorte.</td></tr>';
-  $('greconNote').textContent=total?`A análise considera somente registros com Motivo exatamente igual a “Grecon”, após normalização de espaços e capitalização. Os filtros de Linha e Turno desta página são independentes dos filtros da Visão Geral.`:'Nenhum registro com Motivo “Grecon” atende aos filtros selecionados.';
+  greconDailyOccChart($('greconDailyOccChart'),rows);
+  $('greconImpactBody').innerHTML=areaRows.slice().sort((a,b)=>b.min-a.min).slice(0,12).map((x,i)=>`<tr><td class="rank">${i+1}</td><td>${esc(x.linha)}</td><td>${esc(x.area)}</td><td>${x.occ}</td><td class="hours">${fmt1.format(x.min/60)}</td></tr>`).join('')||'<tr><td colspan="5">Sem dados.</td></tr>';
+  $('greconFreqBody').innerHTML=areaRows.slice().sort((a,b)=>b.occ-a.occ||b.min-a.min).slice(0,12).map((x,i)=>`<tr><td class="rank">${i+1}</td><td>${esc(x.linha)}</td><td>${esc(x.area)}</td><td>${x.occ}</td><td class="hours">${fmt1.format(x.min/60)}</td></tr>`).join('')||'<tr><td colspan="5">Sem dados.</td></tr>';
+  greconTableBody('greconTableBody',rows.slice().sort((a,b)=>(b.data+b.inicio).localeCompare(a.data+a.inicio)).slice(0,250));
+  $('greconRecords').textContent=`${total} registros Grecon`;
+  $('greconNote').textContent='A análise Grecon usa exatamente os mesmos filtros da barra principal: Linha, Turno, Tipo, Área, Data Inicial e Data Final. O único recorte adicional é Motivo = “Grecon”.';
 }
-$('gLinha').addEventListener('change',updateGrecon);
-$('gTurno').addEventListener('change',updateGrecon);
-$('gReset').onclick=()=>{$('gLinha').value='ALL';$('gTurno').value='ALL';updateGrecon()};
 
 function showPage(page){
   const overview=page==='overview',grecon=page==='grecon';
